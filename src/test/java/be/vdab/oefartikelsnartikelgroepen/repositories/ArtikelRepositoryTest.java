@@ -38,12 +38,14 @@ class ArtikelRepositoryTest  extends AbstractTransactionalJUnit4SpringContextTes
     }
 
     @Test
-    void findByNaamAndArtikelgroep() {
+    void findByArtikelgroepNaam() {
         var artikelgroep = "groep1";
         assertThat(repository.findByArtikelgroepNaam(artikelgroep))
-                .hasSize(countRowsInTableWhere(ARTIKELS, "artikelGroepId = (select id from artikelGroepen where naam = 'groep1')"))
-                .extracting(Artikel::getArtikelgroep)
-                .extracting(ArtikelGroep::getNaam)
-                .isEqualTo(artikelgroep);
+                .hasSize(countRowsInTableWhere(ARTIKELS, "artikelGroepId = (select id from artikelgroepen where naam = 'groep1')"))
+                //hier oftewel .first(); volg dan rest in comment, oftewel door je resultlijst loopen
+                .allSatisfy(artikel -> assertThat(artikel.getArtikelgroep()).isEqualTo(artikelgroep));
+                //.extracting(Artikel::getArtikelgroep)
+                //.extracting(ArtikelGroep::getNaam)
+                //.isEqualTo(artikelgroep);
     }
 }
