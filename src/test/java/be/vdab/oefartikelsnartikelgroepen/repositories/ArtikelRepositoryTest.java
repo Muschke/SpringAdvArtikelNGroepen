@@ -1,6 +1,7 @@
 package be.vdab.oefartikelsnartikelgroepen.repositories;
 
 import be.vdab.oefartikelsnartikelgroepen.domain.Artikel;
+import be.vdab.oefartikelsnartikelgroepen.domain.ArtikelGroep;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -33,9 +34,16 @@ class ArtikelRepositoryTest  extends AbstractTransactionalJUnit4SpringContextTes
 
     @Test
     void findHoogstePrijs() {
+        assertThat(repository.findHoogstePrijs()).isEqualByComparingTo(BigDecimal.valueOf(20));
     }
 
     @Test
     void findByNaamAndArtikelgroep() {
+        var artikelgroep = "groep1";
+        assertThat(repository.findByArtikelgroepNaam(artikelgroep))
+                .hasSize(countRowsInTableWhere(ARTIKELS, "artikelGroepId = (select id from artikelGroepen where naam = 'groep1')"))
+                .extracting(Artikel::getArtikelgroep)
+                .extracting(ArtikelGroep::getNaam)
+                .isEqualTo(artikelgroep);
     }
 }

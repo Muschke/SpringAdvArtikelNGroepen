@@ -16,5 +16,5 @@ public interface ArtikelRepository extends JpaRepository<Artikel, Long> {
     @Query("select max(a.prijs) from Artikel a")
     BigDecimal findHoogstePrijs();
     //wat zijn artikels met artikelgroep en bepaalde naam?
-    List<Artikel> findByNaamAndArtikelgroep(String naam, String artikelgroep);
+    List<Artikel> findByArtikelgroepNaam(String naam);
 }
