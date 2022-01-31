@@ -1,0 +1,1 @@
+insert into artikelGroepen (naam) values ('groep1'), ('groep2');
